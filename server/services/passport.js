@@ -17,9 +17,12 @@ passport.use(
 				.then((existingUser) => {
 					if (existingUser) {
 						// We already have a record with the given profile ID
+						done(null, existingUser); // This tells passport that there's no error and there's the user we asked for
 					} else {
 						// Make a new record
-						new User({ googleId: profile.id }).save(); // It will save it in the database for us
+						new User({ googleId: profile.id })
+							.save() // It will save it in the database for us
+							.then((user) => done(null, user));
 					}
 				});
 		}
