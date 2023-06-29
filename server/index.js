@@ -22,6 +22,7 @@ app.use(passport.session());
 
 // Instead of importing with a const, we immediately call that authRoutes() function
 require("./routes/authRoutes")(app);
+require("./routes/billingRoutes")(app);
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT);
