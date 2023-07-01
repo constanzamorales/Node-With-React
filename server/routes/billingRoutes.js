@@ -10,6 +10,9 @@ module.exports = (app) => {
 			source: req.body.id //the token stripe gave us for the credit card
 		});
 
-		console.log(charge);
+		req.user.credits += 5;
+		const user = await req.user.save(); // Persisting user
+
+		res.send(user); // Sending the data we want to communicate back to the browser
 	});
 };
