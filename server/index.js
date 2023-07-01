@@ -24,7 +24,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (process.env.NODE_ENV == "production") {
+if (process.env.NODE_ENV === "production") {
 	// Express will serve up production assets
 	app.use(express.static("client/build"));
 
