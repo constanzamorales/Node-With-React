@@ -25,9 +25,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Instead of importing with a const, we immediately call that authRoutes() function
 require("./routes/authRoutes")(app);
 require("./routes/billingRoutes")(app);
+require("./routes/surveyRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
 	// Express will serve up production assets
