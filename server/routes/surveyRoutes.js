@@ -11,7 +11,10 @@ module.exports = (app) => {
 		const survey = new Survey({
 			title,
 			subject,
-			body
+			body,
+			recipients: recipients.split(",").map((email) => ({ email })), // This will take the list of emails, split it into an array, and then return an object for every email in there with a property of email and a value of the actual email
+			_user: req.user.id,
+			dateSent: Date.now()
 		});
 	});
 };
