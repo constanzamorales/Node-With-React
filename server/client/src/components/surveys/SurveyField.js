@@ -1,7 +1,7 @@
-export default () => {
+export default ({ input }) => {
 	return (
 		<div>
-			<input />
+			<input {...input} />
 		</div>
 	);
 };
