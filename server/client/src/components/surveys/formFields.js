@@ -13,6 +13,6 @@ export default [
 	},
 	{
 		label: "Recipients List",
-		name: "emails"
+		name: "recipients"
 	}
 ];
