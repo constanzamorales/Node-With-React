@@ -15,11 +15,26 @@ module.exports = (app) => {
 	});
 
 	app.post("/api/surveys/webhooks", (req, res) => {
-		const events = _.map(req.body, (event) => {
-			const pathname = new URL(event.url).pathname; // Extract path from the URL
+		const events = _.map(req.body, ({ email, url }) => {
+			const pathname = new URL(url).pathname; // Extract path from the URL
 			const p = new Path("/api/surveys/:surveyId/:choice"); // Extract the survey id and the choice
-			console.log(p.test(pathname));
+			const match = p.test(pathname);
+
+			if (match) {
+				return {
+					email,
+					surveyId: match.surveyId,
+					choice: match.choice
+				};
+			}
 		});
+
+		const compactEvents = _.compact(events); // Lodash removes undefined
+		const uniqueEvents = _.uniqBy(compactEvents, "email", "surveyId"); // Lodash removes duplicates
+
+		console.log(uniqueEvents);
+
+		res.send({});
 	});
 
 	app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
