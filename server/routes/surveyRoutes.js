@@ -16,7 +16,7 @@ module.exports = (app) => {
 
 	app.post("/api/surveys/webhooks", (req, res) => {
 		const p = new Path("/api/surveys/:surveyId/:choice"); // Extract the survey id and the choice
-		const events = _chain(req.body)
+		_.chain(req.body)
 			.map(({ email, url }) => {
 				const match = p.test(new URL(url).pathname); // Extract path from the URL
 
@@ -31,9 +31,21 @@ module.exports = (app) => {
 
 			.compact() // Lodash removes undefined
 			.uniqBy("email", "surveyId") // Lodash removes duplicates
+			.each(({ surveyId, email, choice }) => {
+				Survey.updateOne(
+					{
+						_id: surveyId,
+						recipients: {
+							$elemMatch: { email: email, responded: false }
+						}
+					},
+					{
+						$inc: { [choice]: 1 },
+						$set: { "recipients.$.responded": true }
+					}
+				).exec();
+			})
 			.value(); // Pull the value out
-
-		console.log(events);
 
 		res.send({});
 	});
